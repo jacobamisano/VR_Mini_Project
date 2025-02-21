@@ -11,14 +11,14 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Weight"))
+        if (other.CompareTag("Weight"))
         {
             objectsOnPlate++;
 
             if (!isPressed && objectsOnPlate >= requirementCount)
             {
                 isPressed = true;
-                gameObject.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y/2, transform.localScale.z);
+                gameObject.transform.localScale = new Vector3(transform.localScale.x, (float)0.0017, transform.localScale.z);
                 onPressed?.Invoke();
 
             }
@@ -27,14 +27,17 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Weight"))
+        if (other.CompareTag("Weight"))
         {
             objectsOnPlate--;
 
             if (objectsOnPlate < requirementCount)
             {
                 isPressed = false;
-                gameObject.transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2, transform.localScale.z);
+                if (transform.localScale.y != 0.035)
+                {
+                    gameObject.transform.localScale = new Vector3(transform.localScale.x, (float)0.035, transform.localScale.z);
+                }
                 onReleased?.Invoke();
             }
         }
